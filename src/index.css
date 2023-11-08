@@ -1,0 +1,17 @@
+#root {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  background-color:darkgrey;
+  align-items: flex-start;
+  width:690px;
+  height: 950px;
+  max-height: 1100px;
+  min-height: 900px;
+}
+body{
+  margin:0;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
