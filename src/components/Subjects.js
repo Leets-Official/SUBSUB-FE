@@ -11,26 +11,34 @@ const SubjectsBox = styled.div`
   flex-wrap: wrap;
   column-gap: 15px;
   margin: 10px;
-  justify-content: space-between;
 `;
 const SubjectBox = styled.div`
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
-  width: 150px;
-  height: 40px;
-  border: 2px solid #000;
-  border-radius: 10px;
+  width:150px;
+  height: 50px;
   padding: 20px;
+background-color:#F5F5F5;
+
 `;
 const BtnBox = styled.div`
   display: flex;
-  column-gap: 5px;
-  height: 30px;
+  flex-direction:column;
+  row-gap: 10px;
 `;
+const ImgBox = styled.div`
+  display: flex;
+  flex-direction:column;
+  width: 50px;
+`;
+const Button = styled.button`
+font-size: 12px;
+`
+
 
 export default function Subjects(params) {
-  const { subjects } = useContext(SubjectsContext);
+  const { subjects, setSubjects } = useContext(SubjectsContext);
   const navigate = useNavigate();
   const goNew = () => {
     navigate("/New");
@@ -38,26 +46,32 @@ export default function Subjects(params) {
   const goEdit = () => {
     navigate("/Edit");
   };
-  const deleteSub = ()=>{
-    
+  const goToDo =(subject)=>{
+    navigate("/ToDoList")
+  }
+  const deleteSub = (index)=>{
+    const updatedSubjects = [...subjects];
+    updatedSubjects.splice(index, 1);
+    setSubjects(updatedSubjects);
   }
   return (
-    <SubjectsBox>
+    <div>
       <h2>과목 목록</h2>
+      <Button onClick={goNew}>new Subject</Button>
       <SubjectsBox>
         {subjects.map((subject, index) => (
-          <SubjectBox key={index} style={{ backgroundColor: subject.color }}>
-            {/* <img src="img/subject.png" alt="과목" /> */}
+          <SubjectBox key={index}>
+            <ImgBox onClick={(subject)=>goToDo(subject)}>
+            <img alt="sub_img" src="images\subject.png" style={{ backgroundColor: subject.color }}  ></img>
             {subject.subject_name}
-            <br />
+            </ImgBox>
             <BtnBox>
-              <button onClick={goEdit}>수정</button>
-              <button onClick={deleteSub}>삭제</button>
+              <Button onClick={goEdit}>수정</Button>
+              <Button onClick={()=>deleteSub(index)}>삭제</Button>
             </BtnBox>
           </SubjectBox>
         ))}
       </SubjectsBox>
-      <button onClick={goNew}>new Subject</button>
-    </SubjectsBox>
+    </div>
   );
 }

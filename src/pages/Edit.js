@@ -65,7 +65,7 @@ export default function New(params) {
   return (
     <div>
       <ButtonBar
-        headText={"회원가입"}
+        headText={"과목수정"}
         />
       <h1>새 과목 추가</h1>
       <SubForm onSubmit={handleSubmit}>
@@ -140,7 +140,7 @@ export default function New(params) {
         <label>
           색상 선택 : <input type="color" onChange={handleChange}></input>
         </label>
-        <button type="submit">과목 생성</button>
+        <button type="submit">수정완료</button>
       </SubForm>
     </div>
   );

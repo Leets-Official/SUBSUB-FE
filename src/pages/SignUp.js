@@ -26,7 +26,7 @@ const Form = styled.form`
   row-gap : 12px;
 `
 
-function Auth({ onLoginClick }) {
+function SignUp({ onLoginClick }) {
   const [newID, setNewId] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
@@ -67,4 +67,4 @@ function Auth({ onLoginClick }) {
     </div>
   );
 }
-export default Auth;
+export default SignUp;

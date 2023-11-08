@@ -6,7 +6,8 @@ const LoginBox = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
-  margin-top:50px;
+  align-items: center;
+  margin-top:30px;
 `;
 
 const Input = styled.input`
@@ -14,7 +15,6 @@ font-size: 20px;
   width: 150px;
   margin-left:10px;
 `;
-
 
 const Form = styled.form`
   display: flex;
@@ -43,6 +43,7 @@ function Auth({ onLoginClick }) {
       <LoginBox>
       <ButtonBar
         headText={"로그인"}
+        display='none'
         />
         <Form>
           <label>

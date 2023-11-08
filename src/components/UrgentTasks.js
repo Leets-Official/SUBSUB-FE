@@ -3,8 +3,23 @@ import Urgent from "./Urgent";
 import styled from "styled-components";
 
 const UrgentBox = styled.div`
-  border: 1px solid gray;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+  border-radius: 10px;
+background-color:#F5F5F5;
+
 `;
+
+const Urgents = styled.div`
+margin:10px;
+display:flex;
+flex-direction:column;
+`;
+
+const Title= styled.div`
+border-bottom: 1px solid gray;
+font-size:30px;
+border-radius: 10px;
+`
  
 export default function UrgentTasks() {
   const [urgentTasks, setUrgentTasks] = useState([]);
@@ -40,7 +55,10 @@ export default function UrgentTasks() {
   ];
   return (
     <UrgentBox>
-      <h3>급한 일정</h3>
+      <Title>
+      급한일정
+      </Title>
+      <Urgents>
       {urgentTaskTest.map((task) => (
         <Urgent
           sub={task.sub}
@@ -49,6 +67,7 @@ export default function UrgentTasks() {
           deadline={task.deadline}
         />
       ))}
+      </Urgents>
     </UrgentBox>
   );
 }

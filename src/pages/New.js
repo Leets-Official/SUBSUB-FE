@@ -1,13 +1,14 @@
-import { useState } from "react";
-import styled from "styled-components";
-import ButtonBar from "../components/ButtonBar";
-import React, { useContext } from 'react';
+import React, { useContext,useState } from 'react';
 import { SubjectsContext } from '../components/SubjectsContextFiles';
+import ButtonBar from "../components/ButtonBar";
+import {useNavigate} from "react-router-dom";
+import styled from "styled-components";
 
 const SubForm = styled.form`
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
+  row-gap: 20px;
+  margin-top:50px;
 `;
 
 const DayBox = styled.div`
@@ -51,15 +52,19 @@ export default function New(params) {
       [name]: value
     });
   };
-
+  const navigate = useNavigate();
+  const goMain = () => {
+    navigate("/Main");
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(subData, day);
   };
+
   const addSubject=()=>{
     const newSubject = { ...subData, day };
     const newSubjects = [...subjects, newSubject]; 
     setSubjects(newSubjects)
+    goMain();
     console.log("과목 배열",newSubjects);
   }
 

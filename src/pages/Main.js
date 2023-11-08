@@ -4,28 +4,29 @@ import { useState } from "react";
 import ButtonBar from "../components/ButtonBar";
 import styled from "styled-components";
 
-
-
 const MainBox = styled.div`
-  margin-top: 50px;
   align-items: center;
+`;
+const Time = styled.div`
+  margin: 20px;
 `;
 
 function MainPage() {
   const [curDate, setCurDate] = useState(new Date());
-  const [isLogined, setIsLogined] = useState(false);
-  const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
+  const dayText = `${curDate.getFullYear()}년 ${
+    curDate.getMonth() + 1
+  }월 ${curDate.getDate()}일 `;
+  const hourText = `${curDate.getHours() + 1}시 ${curDate.getMinutes() + 1}분`;
 
   return (
     <MainBox>
-      <ButtonBar
-        headText={"과목선택"}
-        />
-        <>
-          <h2> 오늘은 {headText}</h2>
-          <UrgentTasks />
-          <Subjects />
-        </>
+      <ButtonBar headText={"과목선택"} />
+      <Time>
+        <h2>{dayText}</h2>
+        <h2> {hourText}</h2>
+      </Time>
+      <UrgentTasks />
+      <Subjects />
     </MainBox>
   );
 }

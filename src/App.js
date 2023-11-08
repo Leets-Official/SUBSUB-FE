@@ -4,13 +4,14 @@ import Main from "./pages/Main";
 import Auth from "./pages/Auth";
 import SignUp from "./pages/SignUp";
 import Edit from "./pages/Edit";
+import ToDoList from "./pages/ToDoList"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
 import { SubjectsProvider } from "./components/SubjectsContextFiles";
 const AppBox = styled.div`
-  margin-top: 50px;
   text-align: center;
   display: flex;
+  margin:20px;
 `;
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route path="/Main" element={<Main />} />
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/Edit" element={<Edit />} />
+            <Route path="/ToDoList" element={<ToDoList />} />
           </Routes>
         </AppBox>
       </BrowserRouter>

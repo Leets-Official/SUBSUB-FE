@@ -1,10 +1,18 @@
+import styled from "styled-components";
+
+const UrgentBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  row-gap: 10px; 
+  margin:10px;
+`;
 export default function Urgent({ sub, todo, date, deadline }) {
   return (
-    <div>
-      <p>
+    <UrgentBox>
         <input type="checkbox"></input>
-        {sub} {todo} {date} {deadline}
-      </p>
-    </div>
+        <div>
+        {sub}{todo} {date} {deadline}
+        </div>
+    </UrgentBox>
   );
 }
