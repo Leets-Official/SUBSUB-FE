@@ -50,7 +50,6 @@ export default function New(params) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(subData);
   };
 
 

@@ -29,12 +29,14 @@ const Select = styled.select`
   font-size:15px;
 `
 
-export default function New(params) {
+export default function New() {
+  const { subjects, setSubjects } = useContext(SubjectsContext);
   const [subData, setSubData] = useState({
     subject_name: "",
     class_type: "",
     professor_name: "",
     color: "",
+    id:''
   });
   const [day, setDay] = useState({
     mon: false,
@@ -43,7 +45,6 @@ export default function New(params) {
     thu: false,
     fri: false,
   });
-  const { subjects, setSubjects } = useContext(SubjectsContext);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -52,30 +53,31 @@ export default function New(params) {
       [name]: value
     });
   };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
   const navigate = useNavigate();
   const goMain = () => {
     navigate("/Main");
   };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+
 
   const addSubject=()=>{
-    const newSubject = { ...subData, day };
+    const newSubject = { ...subData, day};
     const newSubjects = [...subjects, newSubject]; 
     setSubjects(newSubjects)
     goMain();
-    console.log("과목 배열",newSubjects);
+    console.log(subjects);
   }
-
+  
   const handleCheckbox = (event) => {
     const { name, checked } = event.target;
     setDay({
       ...day,
       [name]: checked,
     });
-    console.log(day);
   };
+
 
   return (
     <div>

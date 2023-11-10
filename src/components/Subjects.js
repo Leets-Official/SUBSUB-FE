@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import styled from "styled-components";
 import React, { useContext } from "react";
 import { SubjectsContext } from "../components/SubjectsContextFiles";
@@ -11,64 +10,58 @@ const SubjectsBox = styled.div`
   flex-wrap: wrap;
   column-gap: 15px;
   margin: 10px;
+  align-items: center; 
+
 `;
 const SubjectBox = styled.div`
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
-  width:150px;
-  height: 50px;
   padding: 20px;
-background-color:#F5F5F5;
+  border-radius: 15px;
 
 `;
-const BtnBox = styled.div`
-  display: flex;
-  flex-direction:column;
-  row-gap: 10px;
-`;
 const ImgBox = styled.div`
-  display: flex;
+  display:flex;
+  border-radius: 50%;
   flex-direction:column;
-  width: 50px;
+  justify-content: center;
+  align-items: center; 
+  width: 90px;
+  height:90px;
+  font-size: 15px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 `;
-const Button = styled.button`
-font-size: 12px;
+
+const Img = styled.img`
+width: 50px;
+height: 50px
 `
 
 
 export default function Subjects(params) {
   const { subjects, setSubjects } = useContext(SubjectsContext);
   const navigate = useNavigate();
+ 
   const goNew = () => {
     navigate("/New");
   };
-  const goEdit = () => {
-    navigate("/Edit");
-  };
-  const goToDo =(subject)=>{
-    navigate("/ToDoList")
-  }
-  const deleteSub = (index)=>{
-    const updatedSubjects = [...subjects];
-    updatedSubjects.splice(index, 1);
-    setSubjects(updatedSubjects);
+ 
+  const goToDo =(index)=>{
+    navigate(`/ToDoList/${index}`)
   }
   return (
     <div>
       <h2>과목 목록</h2>
-      <Button onClick={goNew}>new Subject</Button>
       <SubjectsBox>
+      <ImgBox onClick={goNew}><Img alt="sub_img" src="images\subject.png"></Img>➕</ImgBox>
         {subjects.map((subject, index) => (
           <SubjectBox key={index}>
-            <ImgBox onClick={(subject)=>goToDo(subject)}>
-            <img alt="sub_img" src="images\subject.png" style={{ backgroundColor: subject.color }}  ></img>
+            <ImgBox style={{ backgroundColor: subject.color }} onClick={()=>goToDo(index)}>
+              <Img alt="sub_img" src="images\subject.png"></Img>
             {subject.subject_name}
             </ImgBox>
-            <BtnBox>
-              <Button onClick={goEdit}>수정</Button>
-              <Button onClick={()=>deleteSub(index)}>삭제</Button>
-            </BtnBox>
           </SubjectBox>
         ))}
       </SubjectsBox>

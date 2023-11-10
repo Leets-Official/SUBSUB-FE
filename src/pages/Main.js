@@ -16,7 +16,7 @@ function MainPage() {
   const dayText = `${curDate.getFullYear()}년 ${
     curDate.getMonth() + 1
   }월 ${curDate.getDate()}일 `;
-  const hourText = `${curDate.getHours() + 1}시 ${curDate.getMinutes() + 1}분`;
+  const hourText = `${curDate.getHours()}시 ${curDate.getMinutes()}분`;
 
   return (
     <MainBox>
