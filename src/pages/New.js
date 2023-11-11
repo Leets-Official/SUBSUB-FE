@@ -1,34 +1,36 @@
-import React, { useContext,useState } from 'react';
-import { SubjectsContext } from '../components/SubjectsContextFiles';
+import React, { useContext, useState } from "react";
+import { SubjectsContext } from "../components/SubjectsContextFiles";
 import ButtonBar from "../components/ButtonBar";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const SubForm = styled.form`
   display: flex;
   flex-direction: column;
   row-gap: 20px;
-  margin-top:50px;
+  margin-top: 50px;
+  align-items:center;
 `;
 
 const DayBox = styled.div`
   display: flex;
   flex-direction: row;
-  row-gap: 10px;
 `;
 
 const Label = styled.label`
-margin-right:10px
+  margin-right: 10px;
 `;
 
 const Input = styled.input`
-  font-size:15px;
+  font-size: 15px;
 `;
 
 const Select = styled.select`
-  font-size:15px;
-`
-
+  font-size: 15px;
+`;
+const SubBox = styled.div`
+  font-size: 15px;
+`;
 export default function New() {
   const { subjects, setSubjects } = useContext(SubjectsContext);
   const [subData, setSubData] = useState({
@@ -36,7 +38,7 @@ export default function New() {
     class_type: "",
     professor_name: "",
     color: "",
-    id:''
+    id: "",
   });
   const [day, setDay] = useState({
     mon: false,
@@ -50,7 +52,7 @@ export default function New() {
     const { name, value } = event.target;
     setSubData({
       ...subData,
-      [name]: value
+      [name]: value,
     });
   };
   const handleSubmit = (event) => {
@@ -61,15 +63,14 @@ export default function New() {
     navigate("/Main");
   };
 
-
-  const addSubject=()=>{
-    const newSubject = { ...subData, day};
-    const newSubjects = [...subjects, newSubject]; 
-    setSubjects(newSubjects)
+  const addSubject = () => {
+    const newSubject = { ...subData, day };
+    const newSubjects = [...subjects, newSubject];
+    setSubjects(newSubjects);
     goMain();
     console.log(subjects);
-  }
-  
+  };
+
   const handleCheckbox = (event) => {
     const { name, checked } = event.target;
     setDay({
@@ -78,30 +79,40 @@ export default function New() {
     });
   };
 
-
   return (
     <div>
-      <ButtonBar
-        headText={"과목추가"}
-        />
+      <ButtonBar headText={"과목추가"} />
       <SubForm onSubmit={handleSubmit}>
+        <SubBox>
+          <label>
+            과목{" "}
+            <Input
+              name="subject_name"
+              placeholder="과목"
+              onChange={handleChange}
+            ></Input>
+          </label>
+          {'  '}
+          <Select name="class_type" onChange={handleChange}>
+            <option selected disabled hidden>
+              과목종류
+            </option>
+            <option value="전필">전필</option>
+            <option value="전선">전선</option>
+            <option value="교양">교양</option>
+            <option value="기타">기타</option>
+          </Select>
+        </SubBox>
         <label>
-          과목 <Input name="subject_name" placeholder="과목" onChange={handleChange}></Input>
-        </label>
-        <Select name="class_type" onChange={handleChange}>
-          <option selected disabled hidden>
-            과목종류
-          </option>
-          <option value="전필">전필</option>
-          <option value="전선">전선</option>
-          <option value="교양">교양</option>
-          <option value="기타">기타</option>
-        </Select>
-        <label>
-          교수명 <Input name="professor_name" placeholder="교수명" onChange={handleChange}></Input>
+          교수명{" "}
+          <Input
+            name="professor_name"
+            placeholder="교수명"
+            onChange={handleChange}
+          ></Input>
         </label>
         <DayBox>
-        월
+          월
           <Label>
             <Input
               type="checkbox"
@@ -153,9 +164,12 @@ export default function New() {
           </Label>
         </DayBox>
         <label>
-          색상 선택 : <input type="color" name="color" onChange={handleChange}></input>
+          색상 선택 :{" "}
+          <input type="color" name="color" onChange={handleChange}></input>
         </label>
-        <button type="submit" onClick={addSubject}>과목 추가</button>
+        <button type="submit" onClick={addSubject}>
+          과목 추가
+        </button>
       </SubForm>
     </div>
   );

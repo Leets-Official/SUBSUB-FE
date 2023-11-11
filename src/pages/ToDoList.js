@@ -11,14 +11,14 @@ const TopBox = styled.div`
   background-color: #f5f5f5;
 `;
 const BtnBox = styled.div`
-display: flex;
-justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 `;
 const Button = styled.button`
   border-radius: 6px;
   background-color: #f5f5f5;
-  border:none;
-  font-size:16px;
+  border: none;
+  font-size: 16px;
 `;
 const SubBox = styled.div`
   display: flex;
@@ -52,13 +52,13 @@ const TextArea = styled.textarea`
 `;
 const CalendarBox = styled.div`
 width=90%
-`
+`;
 
-const ToDoListBox= styled.div`
+const ToDoListBox = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
-`
+`;
 const ToDoBox = styled.div`
   display: flex;
   align-items: flex-start;
@@ -68,35 +68,44 @@ const ToDoBox = styled.div`
 `;
 
 const ToDoSubBox = styled.div`
-flex: 1;
-`
+  flex: 1;
+`;
 const ToDoContentBox = styled.div`
-flex: 4;
-`
+  flex: 4;
+`;
 const ToDoSubDay = styled.div`
-flex: 1;
-`
+  flex: 1;
+`;
 const DueDate = styled.div`
-flex: 1;
-`
-const TextBox = styled.div`
-
-`
-
+  flex: 1;
+`;
+const TextBox = styled.div``;
+const TodoTitle = styled.div`
+  display: flex;
+  font-size:20px;
+  padding:15px;
+  justify-content: center;
+  border-bottom: 1px solid #ccc;
+  `
 export default function ToDoList() {
+  const today = new Date();
   const { subjects, setSubjects } = useContext(SubjectsContext);
-  const { todos, addTodo, toggleTodo, deleteTodo } = useTodos();
-  const [dueDate, setDueDate] = useState('');
-  const [content, setContent] = useState('');
+  const { todos, addTodo, toggleTodo, deleteTodo, setTodos } = useTodos();
+  const [dueDate, setDueDate] = useState(moment(today).format("YYYY-MM-DD"));
+  const [content, setContent] = useState("");
   const navigate = useNavigate();
   let { index } = useParams();
-
   const subject = subjects[index];
+
+  const isMon = subject.day.mon;
+  const isTue = subject.day.tue;
+  const isWed = subject.day.wed;
+  const isThu = subject.day.thu;
+  const isFri = subject.day.fri;
 
   const goEdit = (index) => {
     navigate(`/Edit/${index}`);
   };
-
   const deleteSub = (index) => {
     const updatedSubjects = [...subjects];
     updatedSubjects.splice(index, 1);
@@ -104,32 +113,37 @@ export default function ToDoList() {
     navigate(`/Main`);
   };
 
-
   const handleCalendarChange = (value) => {
     setDueDate(value);
   };
-  const handleContentChange = (e)=>{
-    setContent(e.target.value)
-  }
+  const handleContentChange = (e) => {
+    setContent(e.target.value);
+  };
   const handleToggleTodo = (todoIndex) => {
-    toggleTodo(todoIndex);
+    setTodos((prevTodos) => {
+      const updatedTodos = [...prevTodos];
+      const toggledTodo = updatedTodos.splice(todoIndex, 1)[0];
+      toggledTodo.isChecked = !toggledTodo.isChecked;
+      if (toggledTodo.isChecked) {
+        updatedTodos.push(toggledTodo);
+      } else {
+        updatedTodos.unshift(toggledTodo);
+      }
+      return updatedTodos;
+    });
   };
   const handleDeleteTodo = (todoIndex) => {
     deleteTodo(todoIndex);
   };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTodo(index,moment(dueDate).format("YYYY-MM-DD"), content);
-    setDueDate('');
-    setContent('');
+    setDueDate(moment(today).format("YYYY-MM-DD"));
+    addTodo(index, moment(dueDate).format("YYYY-MM-DD"), content);
+    setContent("");
     console.log(todos);
   };
 
-  const isMon = subject.day.mon;
-  const isTue = subject.day.tue;
-  const isWed = subject.day.wed;
-  const isThu = subject.day.thu;
-  const isFri = subject.day.fri;
   return (
     <div>
       <ButtonBar headText={subject.subject_name} />
@@ -150,18 +164,26 @@ export default function ToDoList() {
           {subject.class_type}
         </SubBox>
       </TopBox>
-    <form onSubmit={handleSubmit}>
-      <CalendarBox>
+      <form onSubmit={handleSubmit}>
+        <CalendarBox>
           마감날짜 : {moment(dueDate).format("YYYY년 MM월 DD일")}까지
-          <Calendar value={dueDate} onChange={handleCalendarChange}/>
-      </CalendarBox>
-      <label>해야 할 일을 입력하세요:</label>
-      <TextBox>
-      <TextArea value={content} onChange={handleContentChange} rows="2"placeholder="ex)심화프로그래밍 복습하기" />
-      <button type="submit">할 일 추가</button>
-      </TextBox>
-    </form>
-    <ToDoListBox>
+          <Calendar value={dueDate} onChange={handleCalendarChange} />
+        </CalendarBox>
+        <label>해야 할 일을 입력하세요:</label>
+        <TextBox>
+          <TextArea
+            value={content}
+            onChange={handleContentChange}
+            rows="2"
+            placeholder="ex)심화프로그래밍 복습하기"
+          />
+          <Button type="submit">할 일 추가</Button>
+        </TextBox>
+      </form>
+      <TodoTitle>
+        <div>ToDoList</div>
+      </TodoTitle>
+      <ToDoListBox>
         {todos.map((todo, todoIndex) => (
           <ToDoBox key={todoIndex}>
             <input
@@ -172,8 +194,8 @@ export default function ToDoList() {
             <ToDoSubBox>{subject.subject_name}</ToDoSubBox>
             <ToDoContentBox>{todo.content}</ToDoContentBox>
             <ToDoSubDay>{moment(todo.dueDate).format("YYYY.MM.DD")}</ToDoSubDay>
-            <DueDate>남은날짜</DueDate>
-            <button onClick={() => handleDeleteTodo(todoIndex)}>삭제</button>
+            <DueDate>{moment(todo.dueDate).diff(moment(today), "days")}일 전</DueDate>
+            <Button onClick={() => handleDeleteTodo(todoIndex)}>삭제</Button>
           </ToDoBox>
         ))}
       </ToDoListBox>

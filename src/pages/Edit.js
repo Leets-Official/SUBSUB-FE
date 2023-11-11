@@ -1,12 +1,15 @@
-import { useState } from "react";
-import styled from "styled-components";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { SubjectsContext } from "../components/SubjectsContextFiles";
 import ButtonBar from "../components/ButtonBar";
+import styled from "styled-components";
+
 const SubForm = styled.form`
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+  margin-top: 50px;
 `;
-
 const DayBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -14,23 +17,25 @@ const DayBox = styled.div`
 `;
 
 const Label = styled.label`
-margin-right:10px
+  margin-right: 10px;
 `;
 
 const Input = styled.input`
-  font-size:15px;
+  font-size: 15px;
 `;
 
 const Select = styled.select`
-  font-size:15px;
-`
+  font-size: 15px;
+`;
 
-export default function New(params) {
+export default function Edit() {
+  const { subjects, setSubjects } = useContext(SubjectsContext);
   const [subData, setSubData] = useState({
     subject_name: "",
     class_type: "",
     professor_name: "",
     color: "",
+    id: "",
   });
   const [day, setDay] = useState({
     mon: false,
@@ -40,18 +45,43 @@ export default function New(params) {
     fri: false,
   });
 
+  const navigate = useNavigate();
+  const { index } = useParams();
+
+  useEffect(() => {
+    const subject = subjects[index];
+    if (subject) {
+      setSubData({
+        subject_name: subject.subject_name,
+        class_type: subject.class_type,
+        professor_name: subject.professor_name,
+        color: subject.color,
+        id: subject.id,
+      });
+      setDay({
+        mon: subject.day.mon,
+        tue: subject.day.tue,
+        wed: subject.day.wed,
+        thu: subject.day.thu,
+        fri: subject.day.fri,
+      });
+    }
+  }, [subjects, index]);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setSubData({
       ...subData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const updatedSubjects = [...subjects];
+    updatedSubjects[index] = { ...subData, day };
+    setSubjects(updatedSubjects);
+    navigate('/Main');
   };
-
 
   const handleCheckbox = (event) => {
     const { name, checked } = event.target;
@@ -63,16 +93,19 @@ export default function New(params) {
 
   return (
     <div>
-      <ButtonBar
-        headText={"과목수정"}
-        />
-      <h1>새 과목 추가</h1>
+      <ButtonBar headText={"과목수정"} />
       <SubForm onSubmit={handleSubmit}>
         <label>
-          과목 <Input name="subject_name" placeholder="과목" onChange={handleChange}></Input>
+          과목{" "}
+          <Input
+            name="subject_name"
+            placeholder="과목"
+            value={subData.subject_name}
+            onChange={handleChange}
+          ></Input>
         </label>
-        <Select name="class_type" onChange={handleChange}>
-          <option selected disabled hidden>
+        <Select name="class_type" onChange={handleChange} value={subData.class_type}>
+          <option disabled hidden>
             과목종류
           </option>
           <option value="전필">전필</option>
@@ -81,10 +114,16 @@ export default function New(params) {
           <option value="기타">기타</option>
         </Select>
         <label>
-          교수명 <Input name="professor_name" placeholder="교수명" onChange={handleChange}></Input>
+          교수명{" "}
+          <Input
+            name="professor_name"
+            placeholder="교수명"
+            value={subData.professor_name}
+            onChange={handleChange}
+          ></Input>
         </label>
         <DayBox>
-        월
+          월
           <Label>
             <Input
               type="checkbox"
@@ -135,9 +174,8 @@ export default function New(params) {
             />
           </Label>
         </DayBox>
-
         <label>
-          색상 선택 : <input type="color" onChange={handleChange}></input>
+          색상 선택 : <input type="color" value={subData.color} onChange={handleChange}></input>
         </label>
         <button type="submit">수정완료</button>
       </SubForm>
