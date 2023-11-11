@@ -6,20 +6,20 @@ export const TodosProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
 
   const addTodo = (index, dueDate, content) => {
-    const newTodo = { index, dueDate, content, isChecked: false };
+    const newTodo = { index:index, dueDate:dueDate, content:content, isChecked: false };
     setTodos(prevTodos => [...prevTodos, newTodo]);
   };
 
-  const toggleTodo = todoIndex => {
-    setTodos(prevTodos =>
-      prevTodos.map((todo, index) =>
-        index === todoIndex ? { ...todo, isChecked: !todo.isChecked } : todo
+  const toggleTodo = (todoIndex) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo, i) => (i === todoIndex ? { ...todo, isChecked: !todo.isChecked } : todo))
       )
-    );
   };
-
+  const deleteTodo = (todoIndex) => {
+    setTodos((prevTodos) => prevTodos.filter((todo, i) => i !== todoIndex));
+  };
   return (
-    <TodosContext.Provider value={{ todos, addTodo, toggleTodo }}>
+    <TodosContext.Provider value={{ todos, addTodo,toggleTodo,deleteTodo  }}>
       {children}
     </TodosContext.Provider>
   );

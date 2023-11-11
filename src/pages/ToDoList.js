@@ -54,9 +54,38 @@ const CalendarBox = styled.div`
 width=90%
 `
 
+const ToDoListBox= styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+`
+const ToDoBox = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+`;
+
+const ToDoSubBox = styled.div`
+flex: 1;
+`
+const ToDoContentBox = styled.div`
+flex: 4;
+`
+const ToDoSubDay = styled.div`
+flex: 1;
+`
+const DueDate = styled.div`
+flex: 1;
+`
+const TextBox = styled.div`
+
+`
+
 export default function ToDoList() {
   const { subjects, setSubjects } = useContext(SubjectsContext);
-  const { todos, addTodo, toggleTodo } = useTodos();
+  const { todos, addTodo, toggleTodo, deleteTodo } = useTodos();
   const [dueDate, setDueDate] = useState('');
   const [content, setContent] = useState('');
   const navigate = useNavigate();
@@ -66,7 +95,6 @@ export default function ToDoList() {
 
   const goEdit = (index) => {
     navigate(`/Edit/${index}`);
-    console.log(index, "번째 item", subjects[index]);
   };
 
   const deleteSub = (index) => {
@@ -75,13 +103,20 @@ export default function ToDoList() {
     setSubjects(updatedSubjects);
     navigate(`/Main`);
   };
+
+
   const handleCalendarChange = (value) => {
     setDueDate(value);
-    console.log(dueDate);
   };
   const handleContentChange = (e)=>{
     setContent(e.target.value)
   }
+  const handleToggleTodo = (todoIndex) => {
+    toggleTodo(todoIndex);
+  };
+  const handleDeleteTodo = (todoIndex) => {
+    deleteTodo(todoIndex);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     addTodo(index,moment(dueDate).format("YYYY-MM-DD"), content);
@@ -121,9 +156,27 @@ export default function ToDoList() {
           <Calendar value={dueDate} onChange={handleCalendarChange}/>
       </CalendarBox>
       <label>해야 할 일을 입력하세요:</label>
-      <TextArea value={content} onChange={handleContentChange} rows="4"placeholder="ex)심화프로그래밍 복습하기" />
+      <TextBox>
+      <TextArea value={content} onChange={handleContentChange} rows="2"placeholder="ex)심화프로그래밍 복습하기" />
       <button type="submit">할 일 추가</button>
+      </TextBox>
     </form>
+    <ToDoListBox>
+        {todos.map((todo, todoIndex) => (
+          <ToDoBox key={todoIndex}>
+            <input
+              type="checkbox"
+              checked={todo.isChecked}
+              onChange={() => handleToggleTodo(todoIndex)}
+            />
+            <ToDoSubBox>{subject.subject_name}</ToDoSubBox>
+            <ToDoContentBox>{todo.content}</ToDoContentBox>
+            <ToDoSubDay>{moment(todo.dueDate).format("YYYY.MM.DD")}</ToDoSubDay>
+            <DueDate>남은날짜</DueDate>
+            <button onClick={() => handleDeleteTodo(todoIndex)}>삭제</button>
+          </ToDoBox>
+        ))}
+      </ToDoListBox>
     </div>
   );
 }
