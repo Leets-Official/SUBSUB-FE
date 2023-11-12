@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 const NavBar = styled.div`
   column-gap: 180px;
   font-size: 30px;
@@ -15,9 +15,15 @@ const Header = styled.header`
   border-bottom: 1px solid gray;
   margin-bottom: 10px;
 `;
-const A = styled.a`
-  text-decoration-line: none;
-  font-family: "Arial", sans-serif;
+const MainLink = styled(Link)`
+color:black;
+text-decoration:none;
+font-family: "Arial", sans-serif;
+
+&:visited{
+  color:black;
+  text:decoration:none;
+}
 `;
 const Button = styled.button`
   font-size: 15px;
@@ -30,13 +36,13 @@ const ButtonBox = styled.div`
   align-items: flex-start;
 `;
 
-const ButtonBar = ({ headText, display }) => {
+const ButtonBar = ({ headText, display, nickName }) => {
   const navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
   };
 
-  const goAuth = () => {
+  const goLogin = () => {
     navigate("/");
   };
 
@@ -44,10 +50,10 @@ const ButtonBar = ({ headText, display }) => {
     <Header>
       <ButtonBox>
         <Button onClick={goBack} style={{ display: display }}>⬅️</Button>
-        <Button onClick={goAuth} style={{ display: display }}>로그아웃</Button>
+        <Button onClick={goLogin} style={{ display: display }}>로그아웃</Button>
       </ButtonBox>
       <Title>
-        <A href="/Main">My SUBSUB</A>
+        <MainLink to={'/Main'}>{nickName} SUBSUB</MainLink>
         <div>{headText}</div>
       </Title>
       <NavBar></NavBar>

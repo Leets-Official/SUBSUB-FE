@@ -9,6 +9,7 @@ import Edit from "./pages/Edit";
 import ToDoList from "./pages/ToDoList"
 import { SubjectsProvider } from "./components/SubjectsContextFiles";
 import { TodosProvider } from './components/TodosContext';
+import './App.css'
 const AppBox = styled.div`
   text-align: center;
   display: flex;

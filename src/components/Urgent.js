@@ -3,7 +3,7 @@ import styled from "styled-components";
 const UrgentBox = styled.div`
   display: flex;
   flex-direction: row;
-  row-gap: 10px; 
+  row-gap: 8px; 
   margin:10px;
 `;
 export default function Urgent({ sub, todo, date, deadline }) {
@@ -11,7 +11,7 @@ export default function Urgent({ sub, todo, date, deadline }) {
     <UrgentBox>
         <input type="checkbox"></input>
         <div>
-        {sub}{todo} {date} {deadline}
+        {sub}  |  {todo}  |  {date}  |  {deadline}
         </div>
     </UrgentBox>
   );

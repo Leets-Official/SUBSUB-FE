@@ -69,10 +69,17 @@ export default function Edit() {
   }, [subjects, index]);
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setSubData({
-      ...subData,
-      [name]: value,
-    });
+    if (name === "color") {
+      setSubData({
+        ...subData,
+        color: value,
+      });
+    } else {
+      setSubData({
+        ...subData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = (event) => {
@@ -80,7 +87,7 @@ export default function Edit() {
     const updatedSubjects = [...subjects];
     updatedSubjects[index] = { ...subData, day };
     setSubjects(updatedSubjects);
-    navigate('/Main');
+    navigate("/Main");
   };
 
   const handleCheckbox = (event) => {
@@ -104,7 +111,11 @@ export default function Edit() {
             onChange={handleChange}
           ></Input>
         </label>
-        <Select name="class_type" onChange={handleChange} value={subData.class_type}>
+        <Select
+          name="class_type"
+          onChange={handleChange}
+          value={subData.class_type}
+        >
           <option disabled hidden>
             과목종류
           </option>
@@ -175,7 +186,14 @@ export default function Edit() {
           </Label>
         </DayBox>
         <label>
-          색상 선택 : <input type="color" value={subData.color} onChange={handleChange}></input>
+          색상 선택 :{" "}
+          <input
+            type="color"
+            defaultValue={subData.color}
+            onChange={(e) =>
+              handleChange({ target: { name: "color", value: e.target.value } })
+            }
+          ></input>
         </label>
         <button type="submit">수정완료</button>
       </SubForm>

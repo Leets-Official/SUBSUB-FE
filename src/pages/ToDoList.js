@@ -58,6 +58,8 @@ const ToDoListBox = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
+  max-height: 300px; /* 높이를 원하는 크기로 설정 */
+  overflow-y: auto; 
 `;
 const ToDoBox = styled.div`
   display: flex;

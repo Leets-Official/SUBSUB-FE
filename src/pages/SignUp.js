@@ -1,34 +1,50 @@
 import { useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import ButtonBar from "../components/ButtonBar";
 
 const SignUpBox = styled.div`
-  text-align: center;
+  align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  column-gap: 20px;
 `;
-
 const Input = styled.input`
-font-size: 20px;
-  width: 150px;
-  margin-left:10px;
+  font-size: 24px;
+  width: 250px;
+  border-radius: 10px;
 `;
 const Button = styled.button`
-margin-top:50px;
-font-size:25px;
-`
-
+  font-size: 22px;
+  width: 100px;
+  height: 80px;
+  background-color: #646464;
+  cursor: pointer;
+  border-radius: 10px;
+  color: white;
+  border: none;
+`;
+const LoginLink = styled(Link)`
+  color:black;
+  text-decoration:none;
+  &:visited{
+    color:black;
+    text:decoration:none;
+  }
+`;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  row-gap : 12px;
-`
+  row-gap: 12px;
+`;
 
 function SignUp({ onLoginClick }) {
   const [newID, setNewId] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [nickName, setNickName] = useState("");
   const navigate = useNavigate();
   const goLogin = () => {
     navigate("/");
@@ -36,34 +52,36 @@ function SignUp({ onLoginClick }) {
 
   return (
     <div>
+      <ButtonBar headText={"회원가입"} display="none" />
       <SignUpBox>
-        <ButtonBar
-        headText={"회원가입"}
-        />
         <Form>
-          <label>
-            아이디 : 
-            <Input
-              type="text"
-              name="newID"
-              placeholder="newID"
-              value={newID}
-              onChange={(e) => setNewId(e.target.value)}
-            />
-          </label>
-          <label>
-            비밀번호 : 
-            <Input
-              type="password"
-              name="newPassword"
-              placeholder="newPassword"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </label>
-          <Button type="button" onClick={goLogin}>회원가입</Button>
+          <Input
+            type="text"
+            name="newID"
+            placeholder="newID"
+            value={newID}
+            onChange={(e) => setNewId(e.target.value)}
+          />
+          <Input
+            type="password"
+            name="newPassword"
+            placeholder="newPassword"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <Input
+            type="text"
+            name="nickName"
+            placeholder="nickName"
+            value={nickName}
+            onChange={(e) => setNickName(e.target.value)}
+          />
         </Form>
+        <Button type="button" onClick={goLogin}>
+          회원가입
+        </Button>
       </SignUpBox>
+      <LoginLink to="/">로그인하기</LoginLink>
     </div>
   );
 }
