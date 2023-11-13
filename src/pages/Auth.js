@@ -39,7 +39,7 @@ const SignUpLink = styled(Link)`
   text-decoration:none;
   &:visited{
     color:black;
-    text:decoration:none;
+    text-decoration:none;
   }
 `;
 function Auth() {
@@ -50,11 +50,12 @@ function Auth() {
     navigate("/Main");
   };
 
-  const onClick = async () =>{
-    const result = await login(id, password);
-    console.log(result);
-    const {token}=result
-    localStorage.setItem('acccess', token)
+  // const onClick = async () =>{
+    const onClick = () =>{
+    // const result = await login(id, password);
+    // console.log(result);
+    // const {token}=result
+    // localStorage.setItem('acccess', token)
     goMain();
   }
   

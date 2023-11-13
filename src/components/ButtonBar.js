@@ -22,9 +22,9 @@ font-family: "Arial", sans-serif;
 
 &:visited{
   color:black;
-  text:decoration:none;
+  text-decoration:none;
 }
-`;
+`
 const Button = styled.button`
   font-size: 15px;
 `;

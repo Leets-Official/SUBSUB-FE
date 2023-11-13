@@ -11,19 +11,19 @@ const MainBox = styled.div`
 `;
 
 function MainPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [data, setData] = useState();
 
-  const checkLoginStatus = () => {
-    const token = localStorage.getItem("access");
-    setIsLoggedIn(!!token);
-  };
-  useEffect(() => {
-    checkLoginStatus();
-    getMyPage().then((res) => {
-      setData(res);
-    });
-  }, []);
+  // const checkLoginStatus = () => {
+  //   const token = localStorage.getItem("access");
+  //   setIsLoggedIn(!!token);
+  // };
+  // useEffect(() => {
+  //   checkLoginStatus();
+  //   getMyPage().then((res) => {
+  //     setData(res);
+  //   });
+  // }, []);
   return (
     <div>
       {isLoggedIn ? (

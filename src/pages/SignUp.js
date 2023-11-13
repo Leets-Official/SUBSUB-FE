@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
+import { signUp } from "../apis/signUp";
 import ButtonBar from "../components/ButtonBar";
 
 const SignUpBox = styled.div`
@@ -18,11 +19,10 @@ const Input = styled.input`
 `;
 const Button = styled.button`
   font-size: 22px;
-  width: 100px;
   height: 80px;
   background-color: #646464;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 15px;
   color: white;
   border: none;
 `;
@@ -31,9 +31,9 @@ const LoginLink = styled(Link)`
   text-decoration:none;
   &:visited{
     color:black;
-    text:decoration:none;
+    text-decoration:none;
   }
-`;
+`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -41,15 +41,20 @@ const Form = styled.form`
   row-gap: 12px;
 `;
 
-function SignUp({ onLoginClick }) {
+function SignUp() {
   const [newID, setNewId] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [nickName, setNickName] = useState("");
   const navigate = useNavigate();
+
   const goLogin = () => {
     navigate("/");
   };
 
+  const onClick= async() =>{
+    await signUp(newID,newPassword, nickName)
+    goLogin()
+  } //회원가입 버튼으로 이용해주기
   return (
     <div>
       <ButtonBar headText={"회원가입"} display="none" />

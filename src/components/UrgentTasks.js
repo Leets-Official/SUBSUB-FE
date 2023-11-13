@@ -1,73 +1,82 @@
-import { useState } from "react";
-import Urgent from "./Urgent";
+import { useState,useContext } from "react";
+import moment from "moment";
+import { useTodos } from "../components/TodosContext";
+import { SubjectsContext } from "../components/SubjectsContextFiles";
 import styled from "styled-components";
 
 const UrgentBox = styled.div`
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   background-color: #f5f5f5;
-  padding: 20px;
+  padding: 10px;
 `;
 
 const Urgents = styled.div`
   margin: 10px;
   display: flex;
   flex-direction: column;
+  font-size: 14px;
+`;
+
+const ToDoBox = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+`;
+
+const ToDoSubBox = styled.div`
+  flex: 2;
+`;
+const ToDoContentBox = styled.div`
+  flex: 5;
+`;
+const ToDoSubDay = styled.div`
+  flex: 1;
+`;
+const DueDate = styled.div`
+  flex: 1;
 `;
 
 export default function UrgentTasks() {
-  const [urgentTasks, setUrgentTasks] = useState([]);
-  let urgentTaskTest = [
-    {
-      key: 0,
-      sub: "컴퓨터구조",
-      todo: "레포트제출",
-      date: "23.11.05",
-      deadline: "1일전",
-    },
-    {
-      key: 1,
-      sub: "리눅스",
-      todo: "명령어암기",
-      date: "23.11.07",
-      deadline: "3일전",
-    },
-    {
-      key: 2,
-      sub: "심프",
-      todo: "발표준비",
-      date: "23.11.07",
-      deadline: "3일전",
-    },
-    {
-      key: 3,
-      sub: "컴퓨터구조",
-      todo: "레포트제출",
-      date: "23.11.11",
-      deadline: "7일전",
-    },
-    {
-      key: 4,
-      sub: "컴퓨터구조",
-      todo: "레포트제출",
-      date: "23.11.11",
-      deadline: "7일전",
-    },
-  ];
+  const { todos,  setTodos } = useTodos();
+  const { subjects, setSubjects } = useContext(SubjectsContext);
+  const today = new Date();
+
+  const handleToggleTodo = (todoIndex) => {
+    setTodos((prevTodos) =>
+    todos.map((todo, i) =>
+      i === todoIndex ? { ...todo, isChecked: !todo.isChecked } : todo)
+  );
+}
+const closestTodos = todos.filter((todo) => !todo.isChecked).sort(
+      (a, b) =>
+        moment(a.dueDate).diff(moment(today), "days") -
+        moment(b.dueDate).diff(moment(today), "days")
+    )
+    .slice(0, 5); 
+
   return (
     <div>
       <h2>급한일정</h2>
       <UrgentBox>
         <Urgents>
-          {urgentTaskTest.map((task) => (
-            <Urgent
-              key={task.key}
-              sub={task.sub}
-              todo={task.todo}
-              date={task.date}
-              deadline={task.deadline}
+          {closestTodos.map((todo, todoIndex) => (
+          <ToDoBox key={todoIndex}>
+            <input
+              type="checkbox"
+              checked={todo.isChecked}
+              onChange={() => handleToggleTodo(todoIndex)}
             />
-          ))}
+            <ToDoContentBox>{todo.content}</ToDoContentBox>
+            <ToDoSubBox>{subjects[todo.index].subject_name}</ToDoSubBox>
+            <ToDoSubDay>{moment(todo.dueDate).format("YYYY.MM.DD")}</ToDoSubDay>
+            <DueDate>
+              {moment(todo.dueDate).diff(moment(today), "days")}일 전
+            </DueDate>
+          </ToDoBox>
+        ))}
         </Urgents>
       </UrgentBox>
     </div>

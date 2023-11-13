@@ -7,27 +7,32 @@ import styled from "styled-components";
 const SubForm = styled.form`
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
+  row-gap: 20px;
   margin-top: 50px;
+  align-items:center;
+  font-size:18px;
 `;
 const DayBox = styled.div`
+  font-size: 18px;
   display: flex;
   flex-direction: row;
-  row-gap: 10px;
 `;
 
 const Label = styled.label`
-  margin-right: 10px;
+  margin-right: 16px;
+  font-size: 18px;
 `;
 
 const Input = styled.input`
-  font-size: 15px;
+  font-size: 18px;
 `;
 
 const Select = styled.select`
-  font-size: 15px;
+  font-size: 18px;
 `;
-
+const SubBox = styled.div`
+  font-size: 18px;
+`;
 export default function Edit() {
   const { subjects, setSubjects } = useContext(SubjectsContext);
   const [subData, setSubData] = useState({
@@ -102,6 +107,7 @@ export default function Edit() {
     <div>
       <ButtonBar headText={"과목수정"} />
       <SubForm onSubmit={handleSubmit}>
+      <SubBox>
         <label>
           과목{" "}
           <Input
@@ -111,6 +117,7 @@ export default function Edit() {
             onChange={handleChange}
           ></Input>
         </label>
+        {'  '}
         <Select
           name="class_type"
           onChange={handleChange}
@@ -124,6 +131,7 @@ export default function Edit() {
           <option value="교양">교양</option>
           <option value="기타">기타</option>
         </Select>
+        </SubBox>
         <label>
           교수명{" "}
           <Input
