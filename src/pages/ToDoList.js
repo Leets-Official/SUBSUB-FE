@@ -10,6 +10,7 @@ import ButtonBar from "../components/ButtonBar";
 
 const TopBox = styled.div`
   background-color: #f5f5f5;
+  width : 650px;
 `;
 const BtnBox = styled.div`
   display: flex;
@@ -20,6 +21,8 @@ const Button = styled.button`
   background-color: #f5f5f5;
   border: none;
   font-size: 16px;
+  width: 60px;
+  height: 40px;
 `;
 
 const SubmitButton = styled.button`
@@ -27,7 +30,7 @@ const SubmitButton = styled.button`
   background-color: #f5f5f5;
   border: none;
   font-size: 20px;
-  width : 150px;
+  width: 150px;
 `;
 
 const SubBox = styled.div`
@@ -35,10 +38,10 @@ const SubBox = styled.div`
   flex-direction: row;
   column-gap: 20px;
   margin: 30px;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   font-weight: bold;
-  font-size: 22px;
+  font-size: 24px;
   border-radius: 10px;
   width: 90%;
 `;
@@ -53,31 +56,32 @@ const DayBox = styled.div`
   column-gap: 16px;
 `;
 const TextArea = styled.textarea`
-  width: 300px;
+  width: 400px;
   padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  resize: vertical; /* 사용자가 수직으로만 리사이즈 가능하도록 설정 */
+  font-size: 14px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  font-family: "Orbit", sans-serif;
+  resize: vertical; 
 `;
 const StyledButton = styled.button`
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #3498db;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    &:hover {
-      background-color: #2980b9;
-    }
-  `;
-  const CalendarBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #228B22;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  &:hover {
+    background-color: #006400;
+  }
+`;
+const CalendarBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const ToDoListBox = styled.div`
   display: flex;
@@ -90,9 +94,10 @@ const ToDoBox = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  font-size: 16px;
   border-bottom: 1px solid #ccc;
-  width:650px;
-  padding: 10px;
+  width: 650px;
+  padding: 8px;
 `;
 
 const ToDoSubBox = styled.div`
@@ -111,17 +116,18 @@ const TextBox = styled.div``;
 const TodoTitle = styled.div`
   display: flex;
   font-size: 20px;
-  padding: 15px;
+  padding: 20px;
   justify-content: center;
-  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
 `;
 
 const Form = styled.form`
-  display : flex;
-  flex-direction:column;
-  row-gap:10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 25px;
   align-items: center;
-
+  margin-bottom: 40px;
+  font-size: 20px;
 `;
 export default function ToDoList() {
   const today = new Date();
@@ -133,7 +139,7 @@ export default function ToDoList() {
   const navigate = useNavigate();
   let { index } = useParams();
 
-  const filteredTodos = todos.filter(todo => todo.index === index);
+  const filteredTodos = todos.filter((todo) => todo.index === index);
   const sortedTodos = filteredTodos.sort((a, b) => (a.isChecked ? 1 : -1));
 
   const subject = subjects[index];
@@ -146,14 +152,14 @@ export default function ToDoList() {
   const goEdit = (index) => {
     navigate(`/Edit/${index}`);
   };
-  
+
   const deleteSub = (index) => {
     const updatedSubjects = [...subjects];
     updatedSubjects.splice(index, 1);
     setSubjects(updatedSubjects);
     navigate(`/Main`);
   };
-  
+
   const handleCalendarChange = (value) => {
     setDueDate(value);
   };
@@ -164,25 +170,28 @@ export default function ToDoList() {
 
   const handleToggleTodo = (todoIndex) => {
     setTodos((prevTodos) =>
-    filteredTodos.map((todo, i) =>
-      i === todoIndex ? { ...todo, isChecked: !todo.isChecked } : todo)
-  );
-}
-const handleDeleteTodo = (todoIndex) => {
-  deleteTodo(todoIndex);
-};
+      filteredTodos.map((todo, i) =>
+        i === todoIndex ? { ...todo, isChecked: !todo.isChecked } : todo
+      )
+    );
+  };
+  const handleDeleteTodo = (todoIndex) => {
+    const todoToDelete = filteredTodos[todoIndex];
+    const indexInTodos = todos.findIndex((todo) => todo === todoToDelete);
+    deleteTodo(indexInTodos);
+  };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  setDueDate(moment(today).format("YYYY-MM-DD"));
-  addTodo(index, moment(dueDate).format("YYYY-MM-DD"), content);
-  setContent("");
-  console.log(todos);
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setDueDate(moment(today).format("YYYY-MM-DD"));
+    addTodo(index, moment(dueDate).format("YYYY-MM-DD"), content);
+    setContent("");
+    console.log(todos);
+  };
 
-const toggleCalendar = () => {
-  setIsSelected(!isSelected);
-};
+  const toggleCalendar = () => {
+    setIsSelected(!isSelected);
+  };
 
   return (
     <div>
@@ -205,52 +214,59 @@ const toggleCalendar = () => {
         </SubBox>
       </TopBox>
       <Form onSubmit={handleSubmit}>
-        <label>해야 할 일을 입력하세요:</label>
+        {isSelected ? (
+          <StyledButton onClick={toggleCalendar}>날짜선택</StyledButton>
+        ) : (
+          <CalendarBox>
+            <Calendar
+              onChange={handleCalendarChange}
+              value={dueDate}
+              minDate={today}
+            />
+            <StyledButton onClick={toggleCalendar}>선택완료</StyledButton>
+          </CalendarBox>
+        )}
         <TextBox>
           <TextArea
             value={content}
             onChange={handleContentChange}
             rows="2"
             placeholder="ex)심화프로그래밍 복습하기"
-            />
+          />
         </TextBox>
-            마감날짜 : {moment(dueDate).format("YYYY년 MM월 DD일")}까지
-            {isSelected ? (
-              <StyledButton onClick={toggleCalendar}>날짜선택</StyledButton>
-              ) : (
-                <CalendarBox>
-              <Calendar onChange={handleCalendarChange} value={dueDate} minDate={today} />
-              <StyledButton onClick={toggleCalendar}>선택완료</StyledButton>
-            </CalendarBox>
-          )}
-          <SubmitButton type="submit">할 일 추가</SubmitButton>
+        <SubmitButton type="submit">할 일 추가</SubmitButton>
       </Form>
       {isSelected ? (
         <div>
           <TodoTitle>
-        <div>ToDoList</div>
-      </TodoTitle>
-        <ToDoListBox>
-        {filteredTodos.map((todo, todoIndex) => (
-          <ToDoBox key={todoIndex}>
-            <input
-              type="checkbox"
-              checked={todo.isChecked}
-              onChange={() => handleToggleTodo(todoIndex)}
-            />
-            <ToDoSubBox>{subject.subject_name}</ToDoSubBox>
-            <ToDoContentBox>{todo.content}</ToDoContentBox>
-            <ToDoSubDay>{moment(todo.dueDate).format("YYYY.MM.DD")}</ToDoSubDay>
-            <DueDate>
-              {moment(todo.dueDate).diff(moment(today), "days")}일 전
-            </DueDate>
-            <Button onClick={() => handleDeleteTodo(todoIndex)}>삭제</Button>
-          </ToDoBox>
-        ))}
-      </ToDoListBox>
-          </div>
-      ) : (<div/>)}
-      
+            <div>ToDoList</div>
+          </TodoTitle>
+          <ToDoListBox>
+            {filteredTodos.map((todo, todoIndex) => (
+              <ToDoBox key={todoIndex}>
+                <input
+                  type="checkbox"
+                  checked={todo.isChecked}
+                  onChange={() => handleToggleTodo(todoIndex)}
+                />
+                <ToDoSubBox>{subject.subject_name}</ToDoSubBox>
+                <ToDoContentBox>{todo.content}</ToDoContentBox>
+                <ToDoSubDay>
+                  {moment(todo.dueDate).format("YYYY.MM.DD")}
+                </ToDoSubDay>
+                <DueDate>
+                  {moment(todo.dueDate).diff(moment(today), "days")}일 전
+                </DueDate>
+                <Button onClick={() => handleDeleteTodo(todoIndex)}>
+                  삭제
+                </Button>
+              </ToDoBox>
+            ))}
+          </ToDoListBox>
+        </div>
+      ) : (
+        <div />
+      )}
     </div>
   );
 }

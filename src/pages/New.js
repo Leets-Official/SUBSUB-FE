@@ -7,14 +7,18 @@ import styled from "styled-components";
 const SubForm = styled.form`
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
-  margin-top: 50px;
-  align-items:center;
+  row-gap: 30px;
+  margin-top: 100px;
+  width: 650px;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
 `;
 
 const DayBox = styled.div`
   display: flex;
   flex-direction: row;
+  column-gap: 18px;
 `;
 
 const Label = styled.label`
@@ -22,14 +26,47 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  font-size: 15px;
+  font-size: 20px;
+  width: 300px;
+  height:35px;
+  border-radius: 10px;
 `;
 
+const CheckBox = styled.input`
+    transform: scale(1.5);
+
+`;
+const SelectColorBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 30px;
+`;
 const Select = styled.select`
-  font-size: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  height: 30px;
+`;
+const Option = styled.option`
+font-size: 18px;
+font-weight: bold;
 `;
 const SubBox = styled.div`
-  font-size: 15px;
+`;
+const Button = styled.button`
+  border-radius: 6px;
+  border: none;
+  font-size: 20px;
+  height: 40px;
+  width: 300px;
+  color: white;
+  font-family: "Arial", sans-serif;
+  font-weight: bold;
+  background-color: #228b22;
+`;
+const WarningMessage = styled.div`
+  font-size: 14px;
+  color: red;
+  margin-top: 10px;
 `;
 export default function New() {
   const { subjects, setSubjects } = useContext(SubjectsContext);
@@ -47,7 +84,7 @@ export default function New() {
     thu: false,
     fri: false,
   });
-
+  const [showWarning, setShowWarning] = useState(false);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setSubData({
@@ -64,6 +101,11 @@ export default function New() {
   };
 
   const addSubject = () => {
+    if (!subData.subject_name || !subData.class_type) {
+      setShowWarning(true);
+    } else {
+      setShowWarning(false);
+    }
     const newSubject = { ...subData, day };
     const newSubjects = [...subjects, newSubject];
     setSubjects(newSubjects);
@@ -85,26 +127,17 @@ export default function New() {
       <SubForm onSubmit={handleSubmit}>
         <SubBox>
           <label>
-            과목{" "}
+            과목이름{" "}
             <Input
               name="subject_name"
               placeholder="과목"
               onChange={handleChange}
             ></Input>
           </label>
-          {'  '}
-          <Select name="class_type" onChange={handleChange}>
-            <option selected disabled hidden>
-              과목종류
-            </option>
-            <option value="전필">전필</option>
-            <option value="전선">전선</option>
-            <option value="교양">교양</option>
-            <option value="기타">기타</option>
-          </Select>
+          {"  "}
         </SubBox>
         <label>
-          교수명{" "}
+          교수이름{" "}
           <Input
             name="professor_name"
             placeholder="교수명"
@@ -114,7 +147,7 @@ export default function New() {
         <DayBox>
           월
           <Label>
-            <Input
+            <CheckBox
               type="checkbox"
               name="mon"
               checked={day.mon}
@@ -124,7 +157,7 @@ export default function New() {
           </Label>
           화
           <Label>
-            <Input
+            <CheckBox
               type="checkbox"
               name="tue"
               checked={day.tue}
@@ -134,7 +167,7 @@ export default function New() {
           </Label>
           수
           <Label>
-            <Input
+            <CheckBox
               type="checkbox"
               name="wed"
               checked={day.wed}
@@ -144,7 +177,7 @@ export default function New() {
           </Label>
           목
           <Label>
-            <Input
+            <CheckBox
               type="checkbox"
               name="thu"
               checked={day.thu}
@@ -154,7 +187,7 @@ export default function New() {
           </Label>
           금
           <Label>
-            <Input
+            <CheckBox
               type="checkbox"
               name="fri"
               checked={day.fri}
@@ -163,13 +196,27 @@ export default function New() {
             />
           </Label>
         </DayBox>
-        <label>
-          색상 선택 :{" "}
-          <input type="color" name="color" onChange={handleChange}></input>
-        </label>
-        <button type="submit" onClick={addSubject}>
-          과목 추가
-        </button>
+        <SelectColorBox>  
+            <label>
+            <Select name="class_type" onChange={handleChange}>
+            <Option selected disabled hidden>
+              과목종류
+            </Option>
+            <Option value="전공필수">전공필수</Option>
+            <Option value="전공선택">전공선택</Option>
+            <Option value="교양">교양</Option>
+            <Option value="기타">기타</Option>
+          </Select>
+            </label>       
+          <label>
+            과목색상 :{" "}
+            <input type="color" name="color" onChange={handleChange}></input>
+          </label>
+        </SelectColorBox>
+
+        <Button type="submit" onClick={addSubject}>
+          과목추가
+        </Button>
       </SubForm>
     </div>
   );

@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const NavBar = styled.div`
-  column-gap: 180px;
+  column-gap: 140px;
   font-size: 30px;
   margin-bottom: 100px;
 `;
@@ -14,26 +14,45 @@ const Header = styled.header`
   text-align: center;
   border-bottom: 1px solid gray;
   margin-bottom: 10px;
+  width: 650px;
 `;
 const MainLink = styled(Link)`
-color:black;
-text-decoration:none;
-font-family: "Arial", sans-serif;
-
-&:visited{
-  color:black;
-  text-decoration:none;
-}
-`
-const Button = styled.button`
-  font-size: 15px;
+  color: black;
+  font-size: 40px;
+  text-decoration: none;
+  font-family: "Arial", sans-serif;
+  &:visited {
+    color: black;
+    text-decoration: none;
+  }
+`;
+const LogoutButton = styled.button`
+  border-radius: 6px;
+  border: none;
+  font-size: 12px;
+  height: 40px;
+  width:250px;
+  color:white;
+  font-family: "Arial", sans-serif;
+  font-weight: bold;
+  background-color: #228B22;
+`;
+const ArrowButton = styled.button`
+  border-radius: 6px;
+  background-color: #f5f5f5;
+  border: none;
+  font-size: 20px;
+  width:250px;
+  height: 40px;
+  font-family: "Arial", sans-serif;
 `;
 const ButtonBox = styled.div`
   text-align: center;
   display: flex;
   margin-bottom: 10px;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  column-gap: 180px;
 `;
 
 const ButtonBar = ({ headText, display, nickName }) => {
@@ -49,12 +68,16 @@ const ButtonBar = ({ headText, display, nickName }) => {
   return (
     <Header>
       <ButtonBox>
-        <Button onClick={goBack} style={{ display: display }}>⬅️</Button>
-        <Button onClick={goLogin} style={{ display: display }}>로그아웃</Button>
+        <ArrowButton onClick={goBack} style={{ display: display }}>
+         &lt;
+        </ArrowButton>
+        <MainLink to={"/Main"}>{nickName} SUBSUB</MainLink>
+        <LogoutButton onClick={goLogin} style={{ display: display }}>
+          로그아웃
+        </LogoutButton>
       </ButtonBox>
       <Title>
-        <MainLink to={'/Main'}>{nickName} SUBSUB</MainLink>
-        <div>{headText}</div>
+        <div style={{ "font-weight": "bold" }}>{headText}</div>
       </Title>
       <NavBar></NavBar>
     </Header>

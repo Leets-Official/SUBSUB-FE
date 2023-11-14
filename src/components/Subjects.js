@@ -9,6 +9,7 @@ const SubjectsBox = styled.div`
   flex-wrap: wrap;
   column-gap: 15px;
   row-gap:20px;
+  width:650px;
   margin: 10px;
   align-items: center;
   max-height: 30vh;

@@ -1,7 +1,7 @@
 import { useState,useContext } from "react";
 import moment from "moment";
-import { useTodos } from "../components/TodosContext";
-import { SubjectsContext } from "../components/SubjectsContextFiles";
+import { useTodos } from "./TodosContext";
+import { SubjectsContext } from "./SubjectsContextFiles";
 import styled from "styled-components";
 
 const UrgentBox = styled.div`
@@ -9,6 +9,7 @@ const UrgentBox = styled.div`
   border-radius: 10px;
   background-color: #f5f5f5;
   padding: 10px;
+  width : 650px;
 `;
 
 const Urgents = styled.div`
@@ -43,19 +44,19 @@ export default function UrgentTasks() {
   const { todos,  setTodos } = useTodos();
   const { subjects, setSubjects } = useContext(SubjectsContext);
   const today = new Date();
+  const closestTodos = todos.filter((todo) => !todo.isChecked).sort(
+    (a, b) =>
+      moment(a.dueDate).diff(moment(today), "days") -
+      moment(b.dueDate).diff(moment(today), "days")
+  )
+  .slice(0, 5); 
 
   const handleToggleTodo = (todoIndex) => {
     setTodos((prevTodos) =>
-    todos.map((todo, i) =>
+    closestTodos.map((todo, i) =>
       i === todoIndex ? { ...todo, isChecked: !todo.isChecked } : todo)
   );
 }
-const closestTodos = todos.filter((todo) => !todo.isChecked).sort(
-      (a, b) =>
-        moment(a.dueDate).diff(moment(today), "days") -
-        moment(b.dueDate).diff(moment(today), "days")
-    )
-    .slice(0, 5); 
 
   return (
     <div>
