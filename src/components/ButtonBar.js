@@ -6,8 +6,9 @@ const NavBar = styled.div`
   margin-bottom: 100px;
 `;
 const Title = styled.div`
-  font-size: 40px;
+  font-size: 32px;
   margin-bottom: 10px;
+  font-family: 'Noto Sans KR', sans-serif;  
 `;
 const Header = styled.header`
   height: 150px;
@@ -15,21 +16,24 @@ const Header = styled.header`
   border-bottom: 1px solid gray;
   margin-bottom: 10px;
   width: 650px;
+  font-family: 'Noto Sans KR', sans-serif;  
+
 `;
 const MainLink = styled(Link)`
-  color: black;
+  color: #228b22;
   font-size: 40px;
   text-decoration: none;
-  font-family: "Arial", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;  
+  font-weight: bold;
 `;
 const LogoutButton = styled.button`
   border-radius: 6px;
   border: none;
-  font-size: 12px;
+  font-size: 14px;
   height: 40px;
   width:250px;
   color:white;
-  font-family: "Arial", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;  
   font-weight: bold;
   background-color: #228B22;
   cursor: pointer;
@@ -57,6 +61,7 @@ const ButtonBox = styled.div`
   justify-content: center;
   align-items: center;
   column-gap: 180px;
+  font-family: 'Noto Sans KR', sans-serif;  
 `;
 
 const ButtonBar = ({ headText, display }) => {

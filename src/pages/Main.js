@@ -6,8 +6,10 @@ import styled from "styled-components";
 import Auth from "./Auth";
 
 const MainBox = styled.div`
-display: flex;
-flex-direction: column;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 `;
 
@@ -17,7 +19,7 @@ function MainPage() {
     <div>
       {isLoggedIn ? (
         <MainBox>
-          <ButtonBar headText={"과목선택"}/>
+          <ButtonBar headText={"과목선택"} />
           <UrgentTodos />
           <Subjects />
         </MainBox>

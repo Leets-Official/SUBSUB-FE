@@ -119,7 +119,7 @@ export default function Edit() {
 
   return (
     <div>
-      <ButtonBar headText={"수정기능 미완성"} />
+      <ButtonBar headText={"수정"} />
       <SubForm onSubmit={handleSubmit}>
       <SubBox>
         <label>

@@ -10,10 +10,12 @@ import findToken from "../findToken";
 const UrgentBox = styled.div`
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  background-color: #f5f5f5;
   padding: 10px;
   width : 650px;
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 `;
+
 
 const Urgents = styled.div`
   margin: 10px;

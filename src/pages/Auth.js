@@ -9,7 +9,7 @@ const LoginBox = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top:100px;
+  margin-top:40px;
   column-gap:20px;
   margin-bottom:20px;
 `;
@@ -17,6 +17,7 @@ const Input = styled.input`
   font-size: 24px;
   width: 250px;
   border-radius: 10px;
+  font-family: 'Noto Sans KR', sans-serif;  
   border: 2px solid ${(props) => (props.isError ? "red" : "#000")};
 `;
 const ErrorMessage = styled.div`
@@ -39,6 +40,17 @@ const Button = styled.button`
   color:white;
   border-radius: 10px;
   border: none;
+  font-family: 'Noto Sans KR', sans-serif;  
+  font-weight: 600;
+  background-color: #228b22;
+  cursor: pointer;
+  &:hover {
+    background-color: #006400;
+  }
+`;
+const Img = styled.img`
+  width: 300px;
+  height: 300px;
 `;
 const SignUpLink = styled(Link)`
   margin-top:20px;
@@ -104,6 +116,8 @@ function Auth() {
         headText={"로그인"}
         display='none'
         />
+        <Img src="images/logo.jpg"></Img>
+
       <LoginBox>
         <Form>
             <Input

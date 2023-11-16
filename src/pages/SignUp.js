@@ -9,13 +9,18 @@ const SignUpBox = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: row;
-  margin-top: 100px;
+  margin-top: 30px;
   margin-bottom: 20px;
   column-gap: 20px;
+`;
+const Img = styled.img`
+  width: 300px;
+  height: 300px;
 `;
 const Input = styled.input`
   font-size: 24px;
   width: 250px;
+  font-family: 'Noto Sans KR', sans-serif;  
   border-radius: 10px;
   border: 2px solid ${(props) => (props.isError ? "red" : "#000")};
 `;
@@ -34,6 +39,12 @@ const Button = styled.button`
   border-radius: 10px;
   color: white;
   border: none;
+  font-family: 'Noto Sans KR', sans-serif;  
+  background-color: #228b22;
+  cursor: pointer;
+  &:hover {
+    background-color: #006400;
+  }
 `;
 const LoginLink = styled(Link)`
   color: black;
@@ -112,6 +123,7 @@ function SignUp() {
   return (
     <div>
       <ButtonBar headText={"회원가입"} display="none" />
+      <Img src="images/logo.jpg"></Img>
       <SignUpBox>
         <Form>
           <Input
