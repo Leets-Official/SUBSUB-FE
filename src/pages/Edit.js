@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SubjectsContext } from "../components/SubjectsContextFiles";
 import ButtonBar from "../components/ButtonBar";
 import styled from "styled-components";
+import { getSubjects } from "../apis/subject.js";
+import findToken from "../findToken";
 
 const SubForm = styled.form`
   display: flex;
@@ -19,18 +21,16 @@ const DayBox = styled.div`
   flex-direction: row;
   column-gap: 18px;
 `;
-
 const Label = styled.label`
  margin-right: 10px;
 `;
-
 const Input = styled.input`
   font-size: 20px;
   width: 300px;
   height:35px;
   border-radius: 10px;
+  font-weight: bold;
 `;
-
 const Select = styled.select`
   font-size: 18px;
   font-weight: bold;
@@ -38,9 +38,7 @@ const Select = styled.select`
 `;
 const CheckBox = styled.input`
     transform: scale(1.5);
-
 `;
-
 const SelectColorBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -62,16 +60,18 @@ const Button = styled.button`
   font-family: "Arial", sans-serif;
   font-weight: bold;
   background-color: #228b22;
+  cursor: pointer;
+  &:hover {
+    background-color: #006400;
+  }
 `;
 export default function Edit() {
   const { subjects, setSubjects } = useContext(SubjectsContext);
-  const [subData, setSubData] = useState({
-    subject_name: "",
-    class_type: "",
-    professor_name: "",
-    color: "",
-    id: "",
-  });
+  const [subject, setSubject] = useState({});
+  const navigate = useNavigate();
+  const { index } = useParams();
+  const access_token=findToken()
+
   const [day, setDay] = useState({
     mon: false,
     tue: false,
@@ -80,38 +80,22 @@ export default function Edit() {
     fri: false,
   });
 
-  const navigate = useNavigate();
-  const { index } = useParams();
 
   useEffect(() => {
-    const subject = subjects[index];
-    if (subject) {
-      setSubData({
-        subject_name: subject.subject_name,
-        class_type: subject.class_type,
-        professor_name: subject.professor_name,
-        color: subject.color,
-        id: subject.id,
-      });
-      setDay({
-        mon: subject.day.mon,
-        tue: subject.day.tue,
-        wed: subject.day.wed,
-        thu: subject.day.thu,
-        fri: subject.day.fri,
-      });
-    }
-  }, [subjects, index]);
+    getSubjects(index, access_token, setSubject)
+  }, [index]);
+
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "color") {
-      setSubData({
-        ...subData,
+      setSubject({
+        ...subject,
         color: value,
       });
     } else {
-      setSubData({
-        ...subData,
+      setSubject({
+        ...subject,
         [name]: value,
       });
     }
@@ -120,30 +104,30 @@ export default function Edit() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const updatedSubjects = [...subjects];
-    updatedSubjects[index] = { ...subData, day };
+    updatedSubjects[index] = { ...subject, day };
     setSubjects(updatedSubjects);
     navigate("/Main");
   };
 
   const handleCheckbox = (event) => {
-    const { name, checked } = event.target;
+    const { name, value } = event.target;
     setDay({
       ...day,
-      [name]: checked,
+      [name]: value,
     });
   };
 
   return (
     <div>
-      <ButtonBar headText={"과목수정"} />
+      <ButtonBar headText={"수정기능 미완성"} />
       <SubForm onSubmit={handleSubmit}>
       <SubBox>
         <label>
           과목이름{" "}
           <Input
-            name="subject_name"
+            name="subjectName"
             placeholder="과목"
-            value={subData.subject_name}
+            value={subject.subjectName}
             onChange={handleChange}
           ></Input>
         </label>
@@ -152,9 +136,9 @@ export default function Edit() {
         <label>
           교수이름{" "}
           <Input
-            name="professor_name"
+            name="professorName"
             placeholder="교수명"
-            value={subData.professor_name}
+            value={subject.professorName}
             onChange={handleChange}
           ></Input>
         </label>
@@ -164,8 +148,8 @@ export default function Edit() {
             <CheckBox
               type="checkbox"
               name="mon"
-              checked={day.mon}
-              value={day.mon}
+              checked={subject.mon}
+              value={subject.mon}
               onChange={handleCheckbox}
             />
           </Label>
@@ -174,8 +158,8 @@ export default function Edit() {
             <CheckBox
               type="checkbox"
               name="tue"
-              checked={day.tue}
-              value={day.tue}
+              checked={subject.tue}
+              value={subject.tue}
               onChange={handleCheckbox}
             />
           </Label>
@@ -184,8 +168,8 @@ export default function Edit() {
             <CheckBox
               type="checkbox"
               name="wed"
-              checked={day.wed}
-              value={day.wed}
+              checked={subject.wed}
+              value={subject.wed}
               onChange={handleCheckbox}
             />
           </Label>
@@ -194,8 +178,8 @@ export default function Edit() {
             <CheckBox
               type="checkbox"
               name="thu"
-              checked={day.thu}
-              value={day.thu}
+              checked={subject.thu}
+              value={subject.thu}
               onChange={handleCheckbox}
             />
           </Label>
@@ -204,8 +188,8 @@ export default function Edit() {
             <CheckBox
               type="checkbox"
               name="fri"
-              checked={day.fri}
-              value={day.fri}
+              checked={subject.fri}
+              value={subject.fri}
               onChange={handleCheckbox}
             />
           </Label>
@@ -213,28 +197,28 @@ export default function Edit() {
         <SelectColorBox> 
           <label> 
         <Select
-          name="class_type"
+          name="classType"
           onChange={handleChange}
-          value={subData.class_type}
+          value={subject.classType}
         >
-          <Option value="전필">전필</Option>
-          <Option value="전선">전선</Option>
+          <Option value="전공필수">전공필수</Option>
+          <Option value="전공선택">전공선택</Option>
           <Option value="교양">교양</Option>
           <Option value="기타">기타</Option>
         </Select>
         </label>
         <label>
-          과목색상상 :{" "}
+          과목색상 :{" "}
           <input
             type="color"
-            defaultValue={subData.color}
+            defaultValue={subject.color}
             onChange={(e) =>
               handleChange({ target: { name: "color", value: e.target.value } })
             }
           ></input>
         </label>
         </SelectColorBox>
-        <Button type="submit">수정완료</Button>
+        <Button type="submit" disabled>수정완료</Button>
       </SubForm>
     </div>
   );

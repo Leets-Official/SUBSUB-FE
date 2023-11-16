@@ -1,8 +1,11 @@
-import { useState,useContext } from "react";
+import { useState,useContext, useEffect } from "react";
 import moment from "moment";
 import { useTodos } from "./TodosContext";
 import { SubjectsContext } from "./SubjectsContextFiles";
 import styled from "styled-components";
+import { getSortToDo, getUrgent, updateToDo } from "../apis/todo";
+import findToken from "../findToken";
+
 
 const UrgentBox = styled.div`
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -25,56 +28,64 @@ const ToDoBox = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #ccc;
   padding: 10px;
+  font-weight: bold;
 `;
 
 const ToDoSubBox = styled.div`
   flex: 2;
 `;
 const ToDoContentBox = styled.div`
-  flex: 5;
+  flex: 6 ;
 `;
 const ToDoSubDay = styled.div`
-  flex: 1;
+  flex: 2;
 `;
 const DueDate = styled.div`
   flex: 1;
 `;
 
 export default function UrgentTasks() {
-  const { todos,  setTodos } = useTodos();
+  const [ todos,  setTodos ] = useState([]);
   const { subjects, setSubjects } = useContext(SubjectsContext);
   const today = new Date();
-  const closestTodos = todos.filter((todo) => !todo.isChecked).sort(
-    (a, b) =>
-      moment(a.dueDate).diff(moment(today), "days") -
-      moment(b.dueDate).diff(moment(today), "days")
-  )
-  .slice(0, 5); 
+  const access_token = findToken();
 
-  const handleToggleTodo = (todoIndex) => {
-    setTodos((prevTodos) =>
-    closestTodos.map((todo, i) =>
-      i === todoIndex ? { ...todo, isChecked: !todo.isChecked } : todo)
-  );
-}
+  // const handleToggleTodo = async (access_token, todo) => {
+  //   const updatedTodo = {
+  //     ...todo,
+  //     isCompleted: !todo.isCompleted,
+  //   };
+  //   await updateToDo(access_token, updatedTodo, index);
+  //   const sortToDo = await getSortToDo(index, access_token);
+  //   await setTodos(sortToDo);
+  // };
 
+useEffect(() => {
+  const urgent = getUrgent(access_token);
+  const getData=()=>{
+    urgent.then((urgentList)=>{
+      setTodos(urgentList)
+    });
+  };
+  getData()
+}, []);
   return (
     <div>
       <h2>급한일정</h2>
       <UrgentBox>
         <Urgents>
-          {closestTodos.map((todo, todoIndex) => (
+          {todos.length > 0 && todos.map((todo, todoIndex) => (
           <ToDoBox key={todoIndex}>
-            <input
-              type="checkbox"
-              checked={todo.isChecked}
-              onChange={() => handleToggleTodo(todoIndex)}
-            />
+            {/* <input
+                  type="checkbox"
+                  checked={todo.isCompleted}
+                  onChange={() => handleToggleTodo(access_token, todo)}
+                /> */}
+            {todoIndex+1}순위
             <ToDoContentBox>{todo.content}</ToDoContentBox>
-            <ToDoSubBox>{subjects[todo.index].subject_name}</ToDoSubBox>
-            <ToDoSubDay>{moment(todo.dueDate).format("YYYY.MM.DD")}</ToDoSubDay>
+            <ToDoSubDay>{todo.expiredAt}</ToDoSubDay>
             <DueDate>
-              {moment(todo.dueDate).diff(moment(today), "days")}일 전
+              {moment(todo.expiredAt).diff(moment(today), "days")}일 전
             </DueDate>
           </ToDoBox>
         ))}

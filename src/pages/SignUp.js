@@ -65,13 +65,13 @@ function SignUp() {
 
   const onClick = async () => {
     if (validateInput()) {
-      await signUp(newID, newPassword, nickName);
+      const result = await signUp(newID, newPassword, nickName);
+      console.log(result);
       goLogin();
     }
-  }; //회원가입 버튼으로 이용해주기
+  }; 
 
   const validateInput = () => {
-    // Validate newID
     const newIdRegex = /^[a-zA-Z0-9]{5,12}$/;
     if (!newIdRegex.test(newID)) {
       setNewIdError(true);

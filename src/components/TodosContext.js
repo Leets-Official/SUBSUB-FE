@@ -5,16 +5,6 @@ const TodosContext = createContext();
 export const TodosProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
 
-  const addTodo = (index, dueDate, content) => {
-    const newTodo = {
-      index: index,
-      dueDate: dueDate,
-      content: content,
-      isChecked: false,
-    };
-    setTodos((prevTodos) => [...prevTodos, newTodo]);
-  };
-
   const toggleTodo = (todoIndex) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo, i) =>
@@ -27,7 +17,7 @@ export const TodosProvider = ({ children }) => {
   };
   return (
     <TodosContext.Provider
-      value={{ todos, addTodo, toggleTodo, deleteTodo, setTodos }}
+      value={{ todos, toggleTodo, deleteTodo, setTodos }}
     >
       {children}
     </TodosContext.Provider>

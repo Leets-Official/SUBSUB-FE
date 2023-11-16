@@ -3,6 +3,8 @@ import { SubjectsContext } from "../components/SubjectsContextFiles";
 import ButtonBar from "../components/ButtonBar";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { addSubject } from "../apis/subject.js";
+import findToken from "../findToken";
 
 const SubForm = styled.form`
   display: flex;
@@ -30,6 +32,7 @@ const Input = styled.input`
   width: 300px;
   height:35px;
   border-radius: 10px;
+  font-weight: bold;
 `;
 
 const CheckBox = styled.input`
@@ -62,14 +65,14 @@ const Button = styled.button`
   font-family: "Arial", sans-serif;
   font-weight: bold;
   background-color: #228b22;
+  cursor: pointer;
+  &:hover {
+    background-color: #006400;
+  }
 `;
-const WarningMessage = styled.div`
-  font-size: 14px;
-  color: red;
-  margin-top: 10px;
-`;
+
 export default function New() {
-  const { subjects, setSubjects } = useContext(SubjectsContext);
+  const {subjects, setSubjects } = useContext(SubjectsContext);
   const [subData, setSubData] = useState({
     subject_name: "",
     class_type: "",
@@ -84,7 +87,6 @@ export default function New() {
     thu: false,
     fri: false,
   });
-  const [showWarning, setShowWarning] = useState(false);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setSubData({
@@ -100,17 +102,11 @@ export default function New() {
     navigate("/Main");
   };
 
-  const addSubject = () => {
-    if (!subData.subject_name || !subData.class_type) {
-      setShowWarning(true);
-    } else {
-      setShowWarning(false);
-    }
-    const newSubject = { ...subData, day };
-    const newSubjects = [...subjects, newSubject];
-    setSubjects(newSubjects);
+  const addSub = async () => {
+    const newSubject = { ...subData, ...day };
+    const access_token=findToken();
+    const result = await addSubject(newSubject, access_token);
     goMain();
-    console.log(subjects);
   };
 
   const handleCheckbox = (event) => {
@@ -214,7 +210,7 @@ export default function New() {
           </label>
         </SelectColorBox>
 
-        <Button type="submit" onClick={addSubject}>
+        <Button type="submit" onClick={addSub}>
           과목추가
         </Button>
       </SubForm>

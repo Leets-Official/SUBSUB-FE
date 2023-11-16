@@ -21,10 +21,6 @@ const MainLink = styled(Link)`
   font-size: 40px;
   text-decoration: none;
   font-family: "Arial", sans-serif;
-  &:visited {
-    color: black;
-    text-decoration: none;
-  }
 `;
 const LogoutButton = styled.button`
   border-radius: 6px;
@@ -36,6 +32,10 @@ const LogoutButton = styled.button`
   font-family: "Arial", sans-serif;
   font-weight: bold;
   background-color: #228B22;
+  cursor: pointer;
+  &:hover {
+    background-color: #006400;
+  }
 `;
 const ArrowButton = styled.button`
   border-radius: 6px;
@@ -45,6 +45,10 @@ const ArrowButton = styled.button`
   width:250px;
   height: 40px;
   font-family: "Arial", sans-serif;
+  cursor: pointer;
+  &:hover {
+    background-color: #646464;
+  }
 `;
 const ButtonBox = styled.div`
   text-align: center;
@@ -55,24 +59,25 @@ const ButtonBox = styled.div`
   column-gap: 180px;
 `;
 
-const ButtonBar = ({ headText, display, nickName }) => {
+const ButtonBar = ({ headText, display }) => {
   const navigate = useNavigate();
   const goBack = () => {
-    navigate(-1);
+    navigate("/Main");
   };
 
-  const goLogin = () => {
+
+  const onLogout =()=>{
+    document.cookie = "access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
     navigate("/");
-  };
-
+  }
   return (
     <Header>
       <ButtonBox>
         <ArrowButton onClick={goBack} style={{ display: display }}>
-         &lt;
+         🏠
         </ArrowButton>
-        <MainLink to={"/Main"}>{nickName} SUBSUB</MainLink>
-        <LogoutButton onClick={goLogin} style={{ display: display }}>
+        <MainLink>SUBSUB</MainLink>
+        <LogoutButton onClick={onLogout} style={{ display: display }}>
           로그아웃
         </LogoutButton>
       </ButtonBox>

@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { SubjectsContext } from "../components/SubjectsContextFiles";
+import axios from "axios";
+import findToken from "../findToken";
 
 const SubjectsBox = styled.div`
   display: flex;  
@@ -34,6 +36,7 @@ const ImgBox = styled.div`
   font-size: 14px;
   text-align: center;
   margin-left:10px;
+  cursor: pointer;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 `;
 
@@ -45,33 +48,51 @@ export default function Subjects(params) {
   const { subjects, setSubjects } = useContext(SubjectsContext);
   const navigate = useNavigate();
 
+  const access_token=findToken()
+
   const goNew = () => {
     navigate("/New");
   };
 
-  const goToDo = (index) => {
-    navigate(`/ToDoList/${index}`);
+  const goToDo = (id) => {
+    navigate(`/ToDoList/${id}`);
   };
-  return (
-    <div>
-      <h2>과목 목록</h2>
-      <SubjectsBox>
-        <ImgBox style={{ backgroundColor: "white" }} onClick={goNew}>
-          <Img alt="sub_img" src="images\subject.png"></Img>
-          추가
-        </ImgBox>
-        {subjects.map((subject, index) => (
-          <SubjectBox key={index}>
-            <ImgBox
-              style={{ backgroundColor: subject.color }}
-              onClick={() => goToDo(index)}
-            >
-              <Img alt="sub_img" src="images\subject.png"></Img>
-              {subject.subject_name}
-            </ImgBox>
-          </SubjectBox>
-        ))}
-      </SubjectsBox>
-    </div>
-  );
+  useEffect(() => {
+    const getSubjects = async () => {
+    try {
+      const result = await axios.get("/subject/main",{
+        headers:{
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      console.log(result.data);
+    setSubjects(result.data);    
+    } catch (error) {
+      console.error("과목 불러오는데 에러발생", error);
+    }
+  };
+  getSubjects()
+}, []);
+return (
+  <div>
+    <h2>과목 목록</h2>
+    <SubjectsBox>
+      <ImgBox style={{ backgroundColor: "white" }} onClick={goNew}>
+        <Img alt="sub_img" src="images\subject.png"></Img>
+        추가
+      </ImgBox>
+      {subjects.map((subject, index) => (
+        <SubjectBox key={index}>
+          <ImgBox
+            style={{ backgroundColor: subject.color }}
+            onClick={() => goToDo(subject.subjectId)}
+          >
+            <Img alt="sub_img" src="images\subject.png"></Img>
+            {subject.subjectName}
+          </ImgBox>
+        </SubjectBox>
+      ))}
+    </SubjectsBox>
+  </div>
+);
 }
