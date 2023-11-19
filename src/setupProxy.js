@@ -1,5 +1,6 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
-const url = "http://ec2-3-39-74-116.ap-northeast-2.compute.amazonaws.com:8080";
+require("dotenv").config();
+const url =process.env.BE_HOST;
 module.exports = function (app) {
   app.use(
     createProxyMiddleware("/register", {
